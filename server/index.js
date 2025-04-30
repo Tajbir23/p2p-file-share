@@ -16,8 +16,15 @@ const io = new Server(server, {
     methods: ['GET', 'POST']
   },
   maxHttpBufferSize: 5e9, // 5GB buffer for very large file transfers
-  pingTimeout: 300000, // 5 minutes
-  pingInterval: 25000
+  pingTimeout: 180000, // 3 minutes (reduced from 5 minutes for faster error detection)
+  pingInterval: 10000, // 10 seconds (reduced from 25 seconds for more responsive connections)
+  // Additional optimizations
+  perMessageDeflate: false, // Disable compression for better performance
+  httpCompression: false, // Disable HTTP compression for better performance
+  upgradeTimeout: 30000, // Increase upgrade timeout for better reliability
+  allowUpgrades: true, // Allow transport upgrades
+  transports: ['websocket', 'polling'], // Prefer websocket, fall back to polling
+  connectTimeout: 45000 // Increase connection timeout to 45 seconds
 });
 
 // Active rooms tracking
